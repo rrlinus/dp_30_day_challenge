@@ -1,0 +1,52 @@
+Given a set of non-negative distinct integers, and a value m, determine if there is a subset of the given set with sum divisible by m.
+solution:
+
+fact:
+(x+y)%m==0
+x%m+y%m==0
+
+Now this you have to find the subset whose sum is zero with one extra condition that whenever you do sum operation take modulo to its m.
+#include <bits/stdc++.h>
+using namespace std;
+bool subsetSum(){
+    int n,m;
+	cin>>n>>m;
+	int arr[n];
+	for(int i=0;i<n;i++){
+	    cin>>arr[i];
+	}
+	bool dp[m];
+	memset(dp,false,sizeof(dp));
+	for(int i=0;i<n;i++){
+	    if(dp[0]==true){
+	        return true;
+	    }
+	    bool temp[m];
+	    memset(temp,false,sizeof(temp));
+	    for(int j=0;j<m;j++){
+	        if(dp[j]){
+	            temp[(j+arr[i])%m]=true;
+	        }
+	    }
+	    for(int j=0;j<m;j++){
+	        if(temp[j]){
+	            dp[j]=true;
+	        }
+	    }
+	    dp[arr[i]%m]=true;
+	} 
+	return dp[0];
+	
+	
+}
+int main()
+ {
+	//code
+	
+	int t;
+	cin>>t;
+	while(t--){
+	    cout<<subsetSum()<<endl;
+	}
+	return 0;
+}
