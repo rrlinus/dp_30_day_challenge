@@ -1,0 +1,47 @@
+Given an undirected, connected and weighted graph G(V, E) with V number of vertices (which are numbered from 0 to V-1) and E number of edges.
+Find and print the shortest distance from the source vertex (i.e. Vertex 0) to all other vertices (including source vertex also) using Dijkstra's Algorithm.
+Print the ith vertex number and the distance from source in one line separated by space. Print different vertices in different lines.
+
+
+.............................................................Dijkstra Algorithm________________________________________________________________
+#include <bits/stdc++.h>
+using namespace std;
+int getMinWeight(int weight[],bool vis[],int v){
+    int minVertex=-1;
+    for(int i=0;i<v;i++){
+        if(!vis[i] and (minVertex==-1 or weight[minVertex]>weight[i])){
+            minVertex=i;
+        }
+    }
+      return minVertex;
+}
+int main(){
+    int v,e;
+    cin>>v>>e;
+    int graph[v][v];
+    memset(graph,0,sizeof(graph));
+    int f,s,w;
+    for(int i=0;i<e;i++){
+        cin>>f>>s>>w;
+        graph[f][s]=w;
+        graph[s][f]=w;
+    }
+    int weight[v];
+    for(int i=0;i<v;i++)
+        weight[i]=INT_MAX;
+    weight[0]=0;
+    bool vis[v];
+    memset(vis,false,sizeof(vis));
+    for(int i=0;i<v-1;i++){
+        int minVertex=getMinWeight(weight,vis,v);
+        vis[minVertex]=true;
+        for(int j=0;j<v;j++){
+            if(!vis[j] and graph[minVertex][j] and weight[j]>weight[minVertex]+graph[minVertex][j] ){
+                weight[j]=weight[minVertex]+graph[minVertex][j]; 
+            }
+        }
+    }
+    for(int i=0;i<=v-1;i++){
+        cout<<i<<" "<<weight[i]<<endl;
+    } 
+}
