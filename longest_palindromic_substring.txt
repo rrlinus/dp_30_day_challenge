@@ -1,0 +1,67 @@
+Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+
+Example 1:Input: "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+
+
+..................Manachar's Algorithm..............................
+_____________________________0(N)____________________________________
+
+
+basic Idea:
+
+To check a string is palindrome or not we will first start from middle of the string let say index C.
+
+Now  assume that the given string is palindrome so,
+
+S[C-i]==S[c+i] must be true where i is some index of the string.
+
+so How can we find that mirror of chacacter at present at index i if c is the middle index?
+
+Answer:c-(i-c)=2*i-c;
+ for more https://leetcode.com/problems/longest-palindromic-substring/
+
+ class Solution {
+public:
+    string longestPalindrome(string s) {
+        //we will create a new string such that we do not need to worry about even and odd length
+        string newString="@";
+        for(int i=0;i<s.length();i++){
+            newString.push_back('#');
+            newString.push_back(s[i]);
+        }
+        newString +="#$";
+        int c=0,r=0;
+        int p[10001]={0};
+        for(int i=1;i<newString.length()-1;i++){
+            int mirror=c-(i-c);
+            if(i<r){
+                p[i]=min(p[mirror],r-i);
+            }
+            while(newString[i+p[i]+1]==newString[i-p[i]-1]){
+                p[i]++;
+            }
+            if(i+p[i]>r){
+                c=i;
+                r=i+p[i];
+            }
+           
+        }
+        int palindromeIndex=0;
+        int maxPi=INT_MIN;
+        for(int i=1;i<newString.length()-1;i++){
+            if(p[i]>maxPi){
+                palindromeIndex=i;
+                maxPi=p[i];
+            }
+        }
+        return s.substr( (palindromeIndex - maxPi-1) / 2,maxPi);
+        
+        
+        
+    }
+};
+
+
+
