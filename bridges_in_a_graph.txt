@@ -1,0 +1,76 @@
+Given an undirected graph and an edge, the task is to find if the given edge is a bridge in graph, i.e., removing the edge disconnects the graph.
+Input:
+
+The first line of the input contains an integer 'T' denoting the number of test cases. Then 'T' test cases follow. Each test case consists of two lines. 
+Description of  test cases is as follows:
+The First line of each test case contains two integers 'N' and 'M'  which denotes the no of vertices and no of edges respectively.
+The Second line of each test case contains' M  space-separated pairs u and v denoting that there is a bidirectional  edge from u to v 
+
+The third line contains two space-separated integers denoting the edge to be removed.
+Output:
+Output 1 if the edge is a Bridge and output 0 otherwise. 
+
+.................simply use dfs two times........................
+// your task is to complete this function
+
+
+/*The structure of the class is as follows 
+which contains an integer V denoting the no 
+of vertices and a list of adjacency vertices.
+class Graph
+{
+    int V;
+    list<int> *adj;
+public :
+    Graph(int V);
+    void addEdge(int v,int w);
+    bool isBridge();
+};*/
+#include <bits/stdc++.h>
+using namespace std;
+bool Graph::isBridge(int u, int v )
+{
+    bool vis[100001];
+    memset(vis,false,sizeof(vis));
+    queue<int> q;
+    q.push(u);
+    vis[u]=true;
+    while(!q.empty()){
+      int var= q.front();
+      q.pop();
+      for(auto it=adj[var].begin();it!=adj[var].end();it++){
+          if(!vis[*it]){
+              q.push(*it);
+              vis[*it]=true;
+          }
+     }
+    }
+    // // for(int i=0;i<5;i++){
+    //     cout<<vis[i]<<" ";
+    // }
+    adj[u].remove(v);
+    adj[v].remove(u);
+    bool vis1[100001];
+    memset(vis1,false,sizeof(vis1));
+    q.push(u);
+    vis1[u]=true;
+    // cout<<endl;
+    while(!q.empty()){
+        int var= q.front();
+        q.pop();
+        for(auto it=adj[var].begin();it!=adj[var].end();it++){
+          if(!vis1[*it]){
+              q.push(*it);
+              vis1[*it]=true;
+          }
+        }
+    }
+   
+    for(int i=0;i<100001;i++){
+        if(vis[i]!=vis1[i]){
+            // cout<<i<<" ";
+        return true;
+        }
+    }
+    return false;
+}
