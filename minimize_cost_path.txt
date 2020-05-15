@@ -1,0 +1,112 @@
+Given a square grid of size N, each cell of which contains integer cost which represents a cost to traverse through that cell, we need to find a path from top left cell to bottom right cell by which total cost incurred is minimum. You can move in 4 directions : up, down, left an right.
+
+Note : It is assumed that negative cost cycles do not exist in input matrix.
+
+Input:
+The first line of input will contain number of testcases T. Then T test cases follow. Each test case contains 2 lines. The first line of each test case contains an integer N denoting the size of the grid. Next line of each test contains a single line containing N*N space separated integers depicting the cost of respective cell from (0,0) to (N,N).
+
+Output:
+For each test case output a single integer depecting the minimum cost to reach the destination.
+
+Constraints:
+1 <= T <= 100
+1 <= N <= 100
+1 <= grid[i][j] <= 104
+
+Example:
+Input:
+2
+5
+31 100 65 12 18 10 13 47 157 6 100 113 174 11 33 88 124 41 20 140 99 32 111 41 20
+2
+42 93 7 14
+
+Output:
+327
+63
+
+Explanation:
+Testcase 1:
+Grid is:
+31, 100, 65, 12, 18,
+10, 13, 47, 157, 6,
+100. 113, 174, 11, 33,
+88, 124, 41, 20, 140,
+99, 32, 111, 41, 20
+A cost grid is given in below diagram, minimum
+cost to reach bottom right from top left
+is 327 (31 + 10 + 13 + 47 + 65 + 12 + 18 + 6 + 33 + 11 + 20 + 41 + 20)
+
+ .......................................Can you think about this?....................................................................................
+
+Here what i have done is just use Dijkistra algorithm so first you think youself then come to the solution.
+
+
+#include <bits/stdc++.h>
+using namespace std;
+int dx[]={0,0,1,-1};
+int dy[]={1,-1,0,0};
+// we can use priority queue to get minimum in logn time but for simplisity we use set data structure here.
+
+set<pair<int,pair<int,int>>> s;
+
+int getMinVertex(int &mvx,int &mvy){
+    pair<int,pair<int,int>> var=*s.begin();
+    s.erase(s.begin());
+    mvx=var.second.first;
+    mvy=var.second.second;
+}
+bool isSafe(int x,int y,int v){
+    return x>=0 and x<v and y>=0 and y<v;
+}
+int Dijkistra(int graph[101][101],int v){
+    int weight[101][101];
+    for(int i=0;i<v;i++){
+        for(int j=0;j<v;j++){
+            weight[i][j]=100000001;
+        }
+    }
+    weight[0][0]=0;
+    bool vis[101][101];
+    memset(vis,false,sizeof(vis));
+    s.insert({weight[0][0],{0,0}});
+    for(int i=1;i<v*v;i++){
+        int mvx=-1,mvy=-1;
+        getMinVertex(mvx,mvy);
+        // cout<<mvx<<" "<<mvy<<endl;
+        vis[mvx][mvy]=true;
+        for(int j=0;j<4;j++){
+            if(isSafe(mvx+dx[j],mvy+dy[j],v)){
+                if(!vis[mvx+dx[j]][mvy+dy[j]] and weight[mvx+dx[j]][mvy+dy[j]]>weight[mvx][mvy]+graph[mvx+dx[j]][mvy+dy[j]]){
+                    weight[mvx+dx[j]][mvy+dy[j]]=weight[mvx][mvy]+graph[mvx+dx[j]][mvy+dy[j]];
+                    s.insert({weight[mvx+dx[j]][mvy+dy[j]],{mvx+dx[j],mvy+dy[j]}});
+                }
+            }
+        }
+        
+    }
+    s.clear();
+    return weight[v-1][v-1]+graph[0][0];
+    
+}
+int main() {
+	//code
+	int t;
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+	cin>>t;
+	while(t--){
+	    int n;
+	    cin>>n;
+	    int graph[101][101];
+	    for(int i=0;i<n;i++){
+	        for(int j=0;j<n;j++){
+	            cin>>graph[i][j];
+	        }
+	    }
+	    cout<<Dijkistra(graph,n)<<endl;
+	    
+	}
+	return 0;
+}
