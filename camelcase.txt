@@ -1,0 +1,115 @@
+Given a dictionary of words where each word follows CamelCase notation, print all words in the dictionary that match with a given pattern consisting of uppercase characters only.
+
+CamelCase is the practice of writing compound words or phrases such that each word or abbreviation begins with a capital letter. Common examples include: “PowerPoint” and “WikiPedia”, “GeeksForGeeks”, “CodeBlocks”, etc.
+
+
+
+#include<bits/stdc++.h>
+#include<algorithm>
+using namespace std;
+const int ALPHABET_SIZE = 256;
+
+struct trienode
+{
+    struct trienode *children[ALPHABET_SIZE];
+    vector<string> rest;
+    bool isEnd;
+};
+typedef struct trienode trienode;
+trienode *getnode(void)
+{
+    trienode *p=new trienode;
+    p->isEnd=false;
+    
+    for(int i{0};i<256;i++)
+    p->children[i]=NULL;
+    
+    return p;
+}
+void insert(trienode *root,string s)
+{
+    trienode *p=root;
+    string ans="";
+    for(int i{0};i<s.length();i++)
+    {
+        if(s[i]>='A'&&s[i]<='Z')
+        {
+            ans+=s[i];
+            int index=s[i];
+            if(!p->children[index])
+            {
+                p->children[index]=getnode();
+            }
+            p=p->children[index];
+        }
+        
+    }
+    p->isEnd=true;
+   
+    (p->rest).push_back(s);
+    
+}
+void printAllWords(trienode* root)
+{
+
+	if (root->isEnd)
+	{
+		sort((root->rest).begin(), (root->rest).end());
+		for(string str : root->rest)
+			cout << str<<" ";
+	}
+
+
+	for (int i = 0; i < 256; i++)
+	{
+		trienode* child = root->children[i];
+		if (child)
+			printAllWords(child);
+	}
+}
+bool search(trienode *root,string k)
+{
+    trienode *p=root;
+    string ans="";
+    for(int i{0};i<k.length();i++)
+    {
+        int index=k[i];
+        if(!p->children[index])
+        return false;
+        p=p->children[index];
+    }
+    
+    printAllWords(p);
+    return true;
+}
+int main()
+ {
+	int t;
+	cin>>t;
+	
+	for(int z{0};z<t;z++)
+	{
+	
+	  int n;
+	  cin>>n;
+	  
+	  string arr[n];
+	  
+	  for(int i{0};i<n;i++)
+	  cin>>arr[i];
+	  
+	  string k;
+	  cin>>k;
+	  trienode *root=getnode();
+	  
+	  for(int i{0};i<n;i++)
+	  insert(root,arr[i]);
+	  
+	  bool f=search(root,k);
+	  if(!f)
+	  cout<<"No match found\n";
+	  else
+	  cout<<"\n";
+	}
+	return 0;
+}
