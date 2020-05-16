@@ -1,38 +1,4 @@
-
-Search Query for Strings
-Trie is an efficient information retrieval data structure. Use this data structure to store strings and search strings. In this problem, you are given an array of strings (consisting of lowercase characters) arr[] of size N. Also, you will be given some queries Q and for each query a string is given and your task is to check if the given string is in the string array or not.
-
-Note: Each word in the array of string can be of size 103.
-
-Input:
-The first line of input contains a single integer T denoting the number of test cases. Then T test cases follow. First line of each test case consist of an integer N, denoting the number of elements to be stored in TRIE and Q, number of queries. Second line of each test case consists of N space separated words of the string array. Last Q lines will be the strings in new line for each query.
-
-Output:
-Print "1" (without quotes) if the given string is present in the TRIE, else print "0" (without quotes).
-
-Constraints:
-1 <= T <= 20
-1 <= N <= 103
-1 <= Q <= 103
-
-Example:
-Input:
-1
-8 3
-the a there answer any by bye their
-the
-an
-any
-
-Output:
-1
-0
-1
-
-Explanation:
-Testcase 1: After inserting words in the array, all the words will be stored. Now searching for the will result in 1 (present), an will result in 0(not present) and any will result in 1 (present).
-
-
+Trie is an efficient information retrieval data structure. Use this data structure to store Strings and search strings. Your task is to use TRIE data structure and search the given string A. If found print 1 else 0.
 
 
 .....
