@@ -1,0 +1,98 @@
+
+Search Query for Strings
+Trie is an efficient information retrieval data structure. Use this data structure to store strings and search strings. In this problem, you are given an array of strings (consisting of lowercase characters) arr[] of size N. Also, you will be given some queries Q and for each query a string is given and your task is to check if the given string is in the string array or not.
+
+Note: Each word in the array of string can be of size 103.
+
+Input:
+The first line of input contains a single integer T denoting the number of test cases. Then T test cases follow. First line of each test case consist of an integer N, denoting the number of elements to be stored in TRIE and Q, number of queries. Second line of each test case consists of N space separated words of the string array. Last Q lines will be the strings in new line for each query.
+
+Output:
+Print "1" (without quotes) if the given string is present in the TRIE, else print "0" (without quotes).
+
+Constraints:
+1 <= T <= 20
+1 <= N <= 103
+1 <= Q <= 103
+
+Example:
+Input:
+1
+8 3
+the a there answer any by bye their
+the
+an
+any
+
+Output:
+1
+0
+1
+
+Explanation:
+Testcase 1: After inserting words in the array, all the words will be stored. Now searching for the will result in 1 (present), an will result in 0(not present) and any will result in 1 (present).
+
+
+
+
+.....
+...........Trie................Time Complexity 0(length of String) ................space complexity 0(26+26*26+26*26*26+.....+upto n length)=(26^n)
+#include <bits/stdc++.h>
+using namespace std;
+struct Node{
+    int a[26];
+    Node *next[26];
+    Node(){
+        for(int i=0;i<26;i++){
+            a[i]=0;
+            next[i]=NULL;
+        }
+    }
+};
+void insert(Node *root,string S){
+    for(int i=0;i<S.length();i++){
+        if(root->next[S[i]-'a']==NULL){
+            root->next[S[i]-'a']=new Node();
+        }
+        if(i==S.length()-1){
+            root->a[i]++;
+        }
+        root=root->next[S[i]-'a'];
+    }
+}
+int Search(Node *root,string S){
+    for(int i=0;i<S.length();i++){
+        if(root->next[S[i]-'a']==NULL){
+            return false;
+        }
+        if(i==S.length()-1){
+            if(root->a[i]==1){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }
+        root=root->next[S[i]-'a'];
+    }
+    return true;
+}
+
+int main() {
+	//code
+	int t;
+	cin>>t;
+	while(t--){
+	    int n;
+	    cin>>n;
+	    string s;
+	    Node *root=new Node();
+	    for(int i=0;i<n;i++){
+	        cin>>s;
+	        insert(root,s);
+	    }
+	    cin>>s;
+	    cout<<Search(root,s)<<endl;
+	}
+	return 0;
+}
