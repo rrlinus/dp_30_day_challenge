@@ -1,0 +1,86 @@
+Some cities are going to be renamed and accordingly name of their railway stations will also change. Changing the name of railway station should also result in changed station code. Railways have an idea that station code should be the shortest prefix out of all railway stations renamed prior to this. If some city has same name, then prefix will be the name with suffix as the count of occurence of that city prior to this and including this, seperated with spaces.
+
+Given N renamed cities consisting of lowercase alphabets only. The task is to generate a station ID for all the stations.
+
+Input:
+First line of input contains number of testcases T. For each testcase, first line of input contains number of cities N. Next N lines contains name of N cities.
+
+Output:
+For each testcase, output the station code for all cities in a seperate line.
+
+Constraints:
+1 <= T <= 100
+1 <= N <= 106
+
+Example:
+Input:
+1
+6
+shimla
+safari
+jammu
+delhi
+jammu
+dehradun
+
+Output:
+s
+sa
+j
+d
+jammu 2
+deh
+
+Explanation:
+
+Testcase 1: Till shimla, no stations are there. So, it's first character will be the unique smallest prefix. For safari, first character of shimla matches, so unique smallest prefix is sa. Similarly, j is smallest unique prefix for jammu and d is for delhi. For last city jammu, we have countered jammu before, and therefor no smallest prefix is possible. So, we can generate its code as jammu with suffix equal to the count of jammu, i.e, 2. Smallest unique prefix is jammu2. Now, delhi can be renamed as d, and dehradun can be renamed as deh, since deh is the smallest non matching prefix. 
+
+soltion:
+#include <bits/stdc++.h>
+using namespace std;
+struct Node{
+    int ctEnd;
+    Node *next[26];
+    Node(){
+        ctEnd=0;
+        for(int i=0;i<26;i++){
+            next[i]=NULL;
+        }
+    }
+};
+string insert(Node *root,string s){
+    string ans="";
+    bool flag=false;
+    for(int i=0;i<s.length();i++){
+        if(flag==false){
+            ans.push_back(s[i]);
+        }
+        if(root->next[s[i]-'a']==NULL){
+            root->next[s[i]-'a']=new Node();
+            flag=true;
+        }
+        root=root->next[s[i]-'a'];
+    }
+    root->ctEnd++;
+    if(flag==false and root->ctEnd>1){
+        ans +=" ";
+        ans.push_back(root->ctEnd+'0');
+    }
+    return ans;
+}
+int main() {
+	//code
+	int t;
+	cin>>t;
+	while(t--){
+	    int n;
+	    cin>>n;
+	    string s;
+	    Node *root=new Node();
+	    for(int i=0;i<n;i++){
+	        cin>>s;
+	        cout<<insert(root,s)<<endl;
+	    }
+	}
+	return 0;
+}
