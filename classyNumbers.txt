@@ -1,0 +1,50 @@
+Let's call some positive integer classy if its decimal representation contains no more than 33 non-zero digits. For example, numbers 44, 200000200000, 1020310203 are classy and numbers 42314231, 102306102306, 72774200007277420000 are not.
+
+You are given a segment [L;R][L;R]. Count the number of classy integers xx such that L≤x≤RL≤x≤R.
+
+Each testcase contains several segments, for each of them you are required to solve the problem separately.
+
+Input
+The first line contains a single integer TT (1≤T≤1041≤T≤104) — the number of segments in a testcase.
+
+Each of the next TT lines contains two integers LiLi and RiRi (1≤Li≤Ri≤10181≤Li≤Ri≤1018).
+
+....................................
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll l,r;
+string s;
+ll dp[20][5][2];
+ll classyDP(ll pos,ll cnt,bool tight){
+    if(pos==s.size()){
+        return 1;
+    }
+    if(dp[pos][cnt][tight]!=-1){
+        return dp[pos][cnt][tight];
+    }
+    ll end=tight?(s[pos]-'0'):9;
+    ll ans=0;
+    for(ll i=0;i<=end;i++){
+        ll cntupd=cnt+(i>0);
+        if(cntupd<=3){
+            ans =(ans + classyDP(pos+1,cntupd,(tight&(i==end))));
+        }
+    }
+    return dp[pos][cnt][tight]=ans;
+}
+int main(){
+    ll t;
+    cin>>t;
+    while(t--){
+        cin>>l>>r;
+        memset(dp,-1,sizeof(dp));
+        s=to_string(r);
+        ll ans=classyDP(0,0,1);
+        memset(dp,-1,sizeof(dp));
+        l-=1;
+        s=to_string(l);
+        ans -=classyDP(0,0,1);
+        cout<<ans<<endl;
+    }
+}
