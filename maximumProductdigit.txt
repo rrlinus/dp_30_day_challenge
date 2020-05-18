@@ -1,0 +1,59 @@
+Find the number from the range [a, b] which has the maximum product of the digits.
+
+#include <bits/stdc++.h>
+#define f first
+#define s second
+#define ll long long
+using namespace std;
+string a,b;
+pair<ll,string> dp[20][2][2][2];
+pair<ll,string> maxProduct(ll pos,ll tight1,ll tight2,ll st){
+    if(pos==b.length()){
+        return make_pair(1,"");
+    }
+    if(dp[pos][tight1][tight2][st].f!=-1){
+        return dp[pos][tight1][tight2][st];
+    }
+    ll start=tight1?(a[pos]-'0'):0;
+    ll end=tight2?(b[pos]-'0'):9;
+    ll ans=0;
+    string curr="";
+    for(ll i=start;i<=end;i++){
+        ll val;
+        if(i==0 and st==0)
+        val=1;
+        else
+        val=i;
+        pair<ll,string> var=maxProduct(pos+1,(tight1&(i==start)),(tight2&(i==end)),(st|(i>0)));
+        if(ans<=(val*var.f)){
+            ans=val*var.f;
+            if(st==0 and i==0)
+            curr=var.s;
+            else{
+                reverse(var.s.begin(),var.s.end());
+                var.s.push_back('0'+i);
+                reverse(var.s.begin(),var.s.end());
+                curr=var.s;
+            }
+        }
+    }
+    return dp[pos][tight1][tight2][st]={ans,curr};
+} 
+int main(){
+
+        cin>>a>>b;
+        reverse(a.begin(),a.end());
+        while(a.length()<b.length())
+        a.push_back('0');
+        for(ll i=0;i<20;i++){
+            for(ll j=0;j<2;j++){
+                for(ll k=0;k<2;k++){
+                    for(ll l=0;l<2;l++){
+                        dp[i][j][k][l].f=-1;
+                    }
+                }
+            }
+        }
+        reverse(a.begin(),a.end());
+        cout<<maxProduct(0,1,1,0).s<<endl;
+}
