@@ -1,0 +1,58 @@
+A robot is designed to move on a rectangular grid of M rows and N columns. The robot is initially positioned at (1, 1), i.e., the top-left cell. The robot has to reach the (M, N) grid cell. In a single step, robot can move only to the cells to its immediate east and south directions. That means if the robot is currently at (i, j), it can move to either (i + 1, j) or (i, j + 1) cell, provided the robot does not leave the grid.
+
+Now somebody has placed several obstacles in random positions on the grid, through which the robot cannot pass. Given the positions of the blocked cells, your task is to count the number of paths that the robot can take to move from (1, 1) to (M, N).
+
+Since the answer can get very large, output the answer modulo 1000000007.
+
+
+
+..........................................
+
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+ll M =(ll)1e9+7;
+int main() {
+	// your code goes here
+	ll n,m,p;
+	cin>>n>>m>>p;
+	int dp[n][m];
+    memset(dp,0,sizeof(dp));
+    int x,y;
+    for(int i=0;i<p;i++){
+        cin>>x>>y;
+        x--;
+        y--;
+        dp[x][y]=-1;
+    }
+    for(int i=0;i<n;i++){
+      for(int j=0;j<m;j++){
+        if(i==0 and j==0){
+            if(dp[i][j]!=-1)
+              dp[i][j]=1;
+              else
+              dp[i][j]=0;
+        }
+        else if(i==0){
+            if(dp[i][j]!=-1)
+              dp[i][j]=dp[i][j-1];
+              else
+              dp[i][j]=0;
+        }
+        else if(j==0){
+            if(dp[i][j]!=-1)
+              dp[i][j]=dp[i-1][j];
+              else
+              dp[i][j]=0;
+        }
+        else{
+            if(dp[i][j]!=-1)
+            dp[i][j] =(dp[i-1][j]+dp[i][j-1])%M;
+            else
+            dp[i][j]=0;
+        }
+      }
+    }
+    cout<<dp[n-1][m-1]<<endl;
+	return 0;
+}
