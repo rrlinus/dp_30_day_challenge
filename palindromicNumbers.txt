@@ -1,0 +1,66 @@
+A number is said to be a palindrome if it remains the same when it is read backwards. Eg. 12021 is pallindrome while 21 is not A number is called total-palindromic if it contains a palindrome with odd length greater than 1 and an even palindrome as a substring.
+
+For example, the number 22676 is total-palindromic whereas the number 101 is not because it contains the palindrome of odd length 676 and even length 22. While 101 does not contain an even palindrome as a substring.
+
+You are given 2 numbers a, b. Output the number of total-palindromic numbers which lie in the range (a,b] i.e set { a+1, a+2, .... b }
+
+Input
+First line contains number of test cases T.
+
+Each test case contains 2 lines.
+
+First line contains the number a
+Second line contains the number b
+Output
+Output T lines, each line containing an integer - the answer to the test case.
+
+Constraints
+1 ≤ T ≤ 100
+99 ≤ a < b ≤ 1018
+
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll dp[20][11][11][2][2][2][2];
+string s;
+string l,r;
+ll solve(ll pos,ll fls,ll sls,ll even,ll odd,ll tight,ll st){
+    if(pos==s.size()){
+        return (even & odd);
+    }
+    if(dp[pos][fls][sls][even][odd][tight][st]!=-1){
+        return dp[pos][fls][sls][even][odd][tight][st];
+    }
+    ll en=tight?(s[pos]-'0'):9;
+    ll ans=0;
+    for(ll i=0;i<=en;i++){
+        if(st==0 and i==0){
+            ans =(ans+solve(pos+1,fls,sls,even,odd,tight&(i>0),st));
+        }
+        else{
+            ans =(ans+solve(pos+1,i,fls,even|(i==fls),odd | (i==sls),tight&(i==en),1));
+        }
+    }
+
+    return dp[pos][fls][sls][even][odd][tight][st]=ans;
+    
+}
+int main() {
+	// your code goes here
+	ll t;
+	cin>>t;
+	while(t--){
+	    cin>>l>>r;
+	    s=r;
+	    ll ans=0;
+	    memset(dp,-1,sizeof(dp));
+	    ans=solve(0,10,10,0,0,1,0);
+//	    cout<<ans<<" ";
+	    memset(dp,-1,sizeof(dp));
+	    s=l;
+	    ans -=solve(0,10,10,0,0,1,0);
+	    cout<<ans<<endl;
+	}
+	
+	return 0;
+}
