@@ -1,0 +1,29 @@
+Check wheather a number is power of 2 or not .
+1st method:
+using an array to store all the power of two time comlexty and space comlexity are logn
+.
+
+2nd method:
+
+use log function ;
+
+3rd method :
+
+using bit manipulation
+
+
+let's define all the power of two and store it in an array.
+
+How can we do that without using any extra space?
+
+let say n=0000000..........upto 31 bits
+
+because power of two cannot go beyond this.
+Now,
+take power of two and do or(|) operation with n because this is the only way to do without using extra space.
+
+whenever you do this operation then you will find that if a number is power of two then bit of the number is is ony at the ith index.
+
+
+
+you 
