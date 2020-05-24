@@ -1,0 +1,32 @@
+Problem:Find the maximum gcd after removing at most one element.
+
+Type:Observation.......|Try to find the solution of prefix and  suffix in 0(n) .
+2)if somehow we are able to determine the overall solution of f[1,i),f(i+1,n) then we are done or we can say that if f(1,n)=f(f(1,i),f(i+1,n)).
+
+*********this property works on xor| sum | gcd or any thing which is accumulative(f(1,n)=f(f(1,i),f(i+1,n))*****************
+
+
+#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int n;
+    cin>>n;
+    int a[n];
+    for(int i=0;i<n;i++){
+        cin>>a[i];
+    }
+    int prefix[n];
+    prefix[0]=a[0];
+    for(int i=1;i<n;i++){
+        prefix[i]=gcd(prefix[i-1],a[i])
+    }
+    int suffix=0;
+    int ans=prefix[n-1];//if we don't remove any elements
+    for(int i=n-1;i>0;i--){
+        ans =max(ans,gcd(prefix[i-1],suffix));//remove ith element(means nth element to 2nd element);
+        suffix=gcd(suffix,a[i]);
+    }
+    ans=max(ans,suffix)//remove the 1st element.
+    cout<<ans<<endl;
+    
+}

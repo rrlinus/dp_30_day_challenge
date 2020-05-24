@@ -1,0 +1,15 @@
+problem :Find all the prime numbers in the range [l,r].
+     
+
+observation:how can you find the nuber which is just greater than l and divisible by some number i.
+
+=(l+(i-1))/i;
+
+
+    int seive[r-l+1];
+    memset(seive,true,sizeof(seive));
+    for(int i=2;i*i<=r;i++){
+        for(int j=max(i*i,((l+(i-1))/i)*i);j<=r;j+=i){
+            seive[j]=false;
+        }
+    }
