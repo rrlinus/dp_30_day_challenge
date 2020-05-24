@@ -1,0 +1,39 @@
+calculate power of (x^n)%M;
+
+we know that we can represent any decimal number in form of 2's power.
+
+
+let say binary form of n= (100100)2
+
+now n=(1*2^5+0*2^4+0*2^3+1*2^2+0*2^1+0*2^0)
+
+
+Now we have to calculate x^(1*2^5+0*2^4+0*2^3+1*2^2+0*2^1+0*2^0).
+
+
+
+x^0=1
+
+x^(2^3)=(x^2)^2=x^8
+
+1)when we represent a decimal number number to binary then the power of 2 increases by 1 it means that we have to do x^2 at each time.
+
+2)whenever we found the set bit then we multiply x to our answer.
+
+code:
+typedef long long ll;
+ll power(ll x,ll n){
+    ll ans=1;
+    while(n){
+        if(y&1)
+        ans =(ans*x)%M;
+        y=n>>1;
+        x=(x*x)%M;
+    }
+    return ans;
+}
+
+
+
+
+
