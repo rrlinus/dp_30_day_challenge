@@ -1,0 +1,76 @@
+Given two integers m & n, find the number of possible sequences of length n such that each of the next element is greater than or equal to twice of the previous element but less than or equal to m.
+
+Input:
+First line consists of test case T. Only line of every test case consists of 2 integers M and N.
+
+Output:
+Single line output, number of sequences possible.
+
+Constraints:
+1<=T<=100
+1<=M,N<=100
+
+Example:
+Input:
+2
+10 4
+5 2
+Output:
+4
+6
+
+Explanation:
+Input : m = 10, n = 4
+Output : 4
+There should be n elements and value of last
+element should be at-most m.
+The sequences are {1, 2, 4, 8}, {1, 2, 4, 9},
+                 {1, 2, 4, 10}, {1, 2, 5, 10}
+
+Input : m = 5, n = 2
+Output : 6
+The sequences are {1, 2}, {1, 3}, {1, 4},
+                  {1, 5}, {2, 4}, {2, 5}
+
+............................GeeksForGeeks.....................................
+solution:
+#include <bits/stdc++.h>
+using namespace std;
+int p[105];
+int dp[105][105];
+int m,n;
+//dp[i][val] store the total number of ways  till the ith position when the value in the ith position is from pow(2,i) to val;
+int solve(int i,int val){
+    if(i==n){
+        return 1;
+    }
+    if(dp[i][val]!=-1){
+        return dp[i][val];
+    }
+    int ans=0;
+    for(int j=val;j<=p[i];j++){
+        ans +=solve(i+1,2*j);
+    }
+    return dp[i][val]=ans;
+}
+int main()
+ {
+	//code
+	int t;
+	cin>>t;
+	while(t--){
+	    cin>>m>>n;
+	    p[n-1]=m;
+	    memset(dp,-1,sizeof(dp));
+//Array p[i] store the maximum vaue at the ith position.
+
+	    for(int i=n-2;i>=0;i--){
+	        p[i]=p[i+1]/2;
+	    }
+	    cout<<solve(0,1)<<endl;
+	    
+	}
+	
+	return 0;
+}
+TimeComplexity:0(n*m*m)
