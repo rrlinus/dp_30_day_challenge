@@ -1,0 +1,60 @@
+// https://practice.geeksforgeeks.org/problems/get-minimum-element-from-stack/1/?track=sp-stack&batchId=105
+/*
+The structure of the class is as follows
+class _stack{
+stack<int> s;
+int minEle;
+public :
+    int getMin();
+    int pop();
+    void push(int);
+};
+*/
+
+/*returns min element from stack*/
+stack<int> st;
+int _stack :: getMin()
+{
+   //Your code here
+   if(s.empty()){
+       while(!st.empty()){
+           st.pop();
+       }
+   }
+  if(!st.empty())
+   return st.top();
+   return -1;
+}
+
+/*returns poped element from stack*/
+int _stack ::pop()
+{
+   //Your code here
+   if(s.empty()){
+       while(!st.empty()){
+           st.pop();
+       }
+   }
+   if(s.empty())
+      return -1;
+   int x=s.top();
+   if(x==st.top()){
+       st.pop();
+   }
+   s.pop();
+   return x;
+}
+
+/*push element x into the stack*/
+void _stack::push(int x)
+{
+   //Your code here
+   if(s.empty()){
+       while(!st.empty()){
+           st.pop();
+       }
+   }
+   s.push(x);
+   if(st.empty() or x<=st.top())
+    st.push(x);
+}
